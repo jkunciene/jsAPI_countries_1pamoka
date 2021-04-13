@@ -1,4 +1,7 @@
 const konteineris = document.getElementById('vieta');
+const paieska = document.getElementById('zodis');
+const mygtukas = document.getElementById('mygtukas');
+mygtukas.addEventListener('click', ieskok);
 
 const fetchSalys = async () => {
   try {
@@ -12,6 +15,8 @@ const fetchSalys = async () => {
         const vienaSalis = document.createElement('div');
         const nuotrauka = document.createElement('img');
         const pavadinimas = document.createElement('h3');
+
+        vienaSalis.className = "vienasalis";
 
         nuotrauka.src = salis.flag;
         pavadinimas.innerText = salis.name;
@@ -34,12 +39,27 @@ const fetchSalys = async () => {
         
       })
 
-
   } catch(error){
     console.log(error)
   }
-
-
 }
-
 fetchSalys();
+async function ieskok() {
+  try{
+    const ieskomaFraze = paieska.value;
+    console.log(ieskomaFraze);
+    let salis = await fetch(`https://restcountries.eu/rest/v2/name/${ieskomaFraze}`);
+    let atsakymas = await salis.json();
+    console.log(atsakymas);
+
+    const kur = document.getElementById('paieska');
+    const divas = document.createElement('div');
+    const saliesPavadinimas = document.createElement('p')
+    saliesPavadinimas.innerText = atsakymas[0].name;  
+    kur.appendChild(divas);
+    divas.appendChild(saliesPavadinimas);
+
+  } catch(err) {
+    console.log(err)
+  }
+}
